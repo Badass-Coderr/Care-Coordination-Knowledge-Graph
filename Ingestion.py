@@ -68,10 +68,10 @@ def save_data(data):
             billable_period_end = r["billablePeriod"]["end"]
             claims.append({
                 "claim_id": r["id"],
-                # "encounter_id": r["encounter"]["reference"].split(":")[-1] if r.get("encounter") else None,
+                "encounter_id": r["item"][0]["encounter"][0]["reference"].split(":")[-1],
                 "patient_id": patient_id,
                 "amount": r["total"]["value"],
-                "provider_id": r["provider"]["reference"].split("|")[-1] if r.get("provider") else None,
+            # "provider_id": r["provider"]["reference"].split("|")[-1] if r.get("provider") else None,
                 "billable_period_start": billable_period_start,
                 "billable_period_end": billable_period_end
             })
@@ -109,10 +109,10 @@ def save_data(data):
 
 
 
-files = [file for file in os.listdir("fhir") if file.endswith(".json")]
+files = [file for file in os.listdir("synthea_sample_data_fhir_latest") if file.endswith(".json")]
 
 for file in files:
-    with open(f"fhir/{file}") as f:
+    with open(f"synthea_sample_data_fhir_latest/{file}") as f:
         data = json.load(f)
     print(f"Processing {file}...")
     save_data(data)
